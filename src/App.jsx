@@ -8,7 +8,7 @@ import GrainOverlay from "./components/layout/GrainOverlay";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CornerIcons from "./components/layout/CornerIcons";
-import JarLayer from "./components/three/JarLayer";
+import FrameScrubJar from "./components/media/FrameScrubJar";
 
 import Hero from "./components/sections/Hero";
 import AngleOfFlavor from "./components/sections/AngleOfFlavor";
@@ -60,7 +60,7 @@ export default function App() {
 
       {/* Jar floats above everything — pointer-events none so text remains clickable */}
       <div ref={jarWrapRef}>
-        <JarLayer />
+        <FrameScrubJar />
       </div>
 
       {/* Story wrapper — scroll progress drives the jar rise + rotation */}
