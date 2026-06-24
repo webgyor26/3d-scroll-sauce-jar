@@ -1,0 +1,24 @@
+:root {
+  --brick:        #6B2A18;
+  --brick-dark:   #4E1E11;
+  --amber:        #F7AC32;
+  --amber-soft:   #F9C46B;
+  --espresso:     #231009;
+  --ink:          #120A06;
+  --magenta:      #C21A6C;
+  --magenta-hot:  #E0005C;
+  --orange:       #E8821E;
+  --cream:        #F8EFE2;
+
+  --fs-hero:   clamp(3.5rem, 14vw, 16rem);
+  --fs-h2:     clamp(2.5rem, 7vw, 7rem);
+  --fs-h3:     clamp(1.75rem, 4vw, 3.5rem);
+  --fs-accent: clamp(2rem, 6vw, 5rem);
+  --fs-body:   clamp(1rem, 1.1vw, 1.25rem);
+  --fs-label:  0.8rem;
+}
+
+::selection {
+  background: var(--magenta-hot);
+  color: var(--cream);
+}

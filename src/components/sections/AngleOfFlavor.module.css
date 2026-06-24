@@ -1,0 +1,22 @@
+.section {
+  background: var(--brick);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: clamp(4rem, 10vw, 10rem);
+}
+
+.heading {
+  font-size: var(--fs-h2);
+  color: var(--amber);
+  max-width: 8ch;
+  margin-bottom: 2rem;
+}
+
+.para {
+  max-width: 460px;
+  color: var(--cream);
+  opacity: 0.8;
+  line-height: 1.65;
+}

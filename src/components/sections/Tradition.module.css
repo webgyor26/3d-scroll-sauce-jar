@@ -1,0 +1,75 @@
+.section {
+  background: var(--brick-dark);
+}
+
+.heading {
+  font-size: var(--fs-h2);
+  color: var(--amber);
+  margin-bottom: 1rem;
+}
+
+.sub {
+  color: var(--cream);
+  opacity: 0.7;
+  margin-bottom: 3rem;
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(247,172,50,0.2);
+  border-radius: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.numeral {
+  font-family: 'Noto Sans Devanagari', 'Hanken Grotesk', sans-serif;
+  font-size: 3rem;
+  color: var(--amber);
+  line-height: 1;
+  font-weight: 700;
+}
+
+.cardImg {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.cardImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .cardImg img { transform: scale(1.05); }
+
+.cardTitle {
+  font-size: 1.3rem;
+  color: var(--cream);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.cardDesc {
+  font-size: 0.9rem;
+  color: var(--cream);
+  opacity: 0.65;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .cards { grid-template-columns: 1fr; }
+}

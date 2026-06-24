@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,700;0,800;0,900;1,800&family=Bagel+Fat+One&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: auto; }
+
+body {
+  background: var(--brick);
+  color: var(--cream);
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img, canvas { display: block; max-width: 100%; }
+
+button {
+  font-family: 'Hanken Grotesk', sans-serif;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Dotted divider */
+.dotted-line {
+  height: 4px;
+  width: 100%;
+  background-image: repeating-radial-gradient(
+    circle,
+    var(--amber) 0, var(--amber) 2px,
+    transparent 2px, transparent 10px
+  );
+  background-size: 10px 4px;
+  background-repeat: repeat-x;
+}
+
+/* Pill button */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.25s;
+}
+
+.pill-btn--solid {
+  background: var(--amber);
+  color: var(--espresso);
+}
+
+.pill-btn--outline {
+  background: transparent;
+  color: var(--amber);
+  border: 2px solid var(--amber);
+}
+
+.pill-btn--solid:hover {
+  background: var(--amber-soft);
+}
+
+.pill-btn--outline:hover {
+  background: var(--amber);
+  color: var(--espresso);
+}
+
+/* Section padding */
+.section {
+  position: relative;
+  padding: clamp(4rem, 10vw, 10rem) clamp(1.5rem, 6vw, 7rem);
+}
+
+/* Label / eyebrow */
+.label {
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  font-family: 'Hanken Grotesk', sans-serif;
+}
