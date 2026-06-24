@@ -4,61 +4,90 @@ import { useRef, useMemo } from "react";
 import { story } from "../../lib/storyProgress";
 import * as THREE from "three";
 
-/* ---------- Label texture: CHILLI JAM wordmark drawn on a canvas ---------- */
+/* ── Label texture ── */
 function useLabelTexture() {
   return useMemo(() => {
-    const w = 1024;
-    const h = 512;
-    const c = document.createElement("canvas");
-    c.width = w;
-    c.height = h;
-    const x = c.getContext("2d");
+    const W = 1024, H = 640;
+    const cv = document.createElement("canvas");
+    cv.width = W; cv.height = H;
+    const c = cv.getContext("2d");
 
-    // Dark espresso label background
-    x.fillStyle = "#1a0c06";
-    x.fillRect(0, 0, w, h);
+    // deep espresso background
+    c.fillStyle = "#170a04";
+    c.fillRect(0, 0, W, H);
 
-    // subtle vignette
-    const g = x.createRadialGradient(w / 2, h / 2, 80, w / 2, h / 2, w / 1.4);
-    g.addColorStop(0, "rgba(80,30,10,0.45)");
-    g.addColorStop(1, "rgba(0,0,0,0)");
-    x.fillStyle = g;
-    x.fillRect(0, 0, w, h);
+    // inner warm highlight (centre glow)
+    const grd = c.createRadialGradient(W/2, H/2, 40, W/2, H/2, W*0.7);
+    grd.addColorStop(0, "rgba(120,40,5,0.55)");
+    grd.addColorStop(1, "rgba(0,0,0,0)");
+    c.fillStyle = grd;
+    c.fillRect(0, 0, W, H);
 
-    // top + bottom amber hairlines
-    x.fillStyle = "#F7AC32";
-    x.fillRect(w * 0.12, h * 0.16, w * 0.76, 5);
-    x.fillRect(w * 0.12, h * 0.84, w * 0.76, 5);
+    // top amber border band
+    c.fillStyle = "#F7AC32";
+    c.fillRect(0, 0, W, 12);
+    // bottom amber band
+    c.fillRect(0, H - 12, W, 12);
+    // inner thin amber lines
+    c.fillStyle = "rgba(247,172,50,0.5)";
+    c.fillRect(0, 28, W, 3);
+    c.fillRect(0, H - 31, W, 3);
 
-    // Eyebrow
-    x.fillStyle = "#F9C46B";
-    x.font = "700 30px Arial, sans-serif";
-    x.textAlign = "center";
-    x.textBaseline = "middle";
-    x.letterSpacing = "8px";
-    x.fillText("FIRE-ROASTED · SMALL BATCH", w / 2, h * 0.27);
+    // flame / chilli motif — simple drawn icon (left side)
+    const fx = 96, fy = H / 2;
+    c.beginPath();
+    c.ellipse(fx, fy, 22, 34, 0, 0, Math.PI * 2);
+    c.fillStyle = "#E0005C";
+    c.fill();
+    c.beginPath();
+    c.ellipse(fx, fy - 12, 14, 24, 0, 0, Math.PI * 2);
+    c.fillStyle = "#F7AC32";
+    c.fill();
+    c.beginPath();
+    c.ellipse(fx, fy - 20, 8, 16, 0, 0, Math.PI * 2);
+    c.fillStyle = "#fff8f0";
+    c.fill();
+    // mirror on right
+    const fx2 = W - 96;
+    c.beginPath(); c.ellipse(fx2, fy, 22, 34, 0, 0, Math.PI*2);
+    c.fillStyle = "#E0005C"; c.fill();
+    c.beginPath(); c.ellipse(fx2, fy-12, 14, 24, 0, 0, Math.PI*2);
+    c.fillStyle = "#F7AC32"; c.fill();
+    c.beginPath(); c.ellipse(fx2, fy-20, 8, 16, 0, 0, Math.PI*2);
+    c.fillStyle = "#fff8f0"; c.fill();
 
-    // Wordmark CHILLI
-    x.fillStyle = "#F7AC32";
-    x.font = "900 132px Arial Black, Arial, sans-serif";
-    x.fillText("CHILLI", w / 2, h * 0.46);
+    // eyebrow
+    c.fillStyle = "#F9C46B";
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+    c.font = "700 22px Arial, sans-serif";
+    c.fillText("FIRE-ROASTED · SMALL BATCH", W/2, H * 0.14);
 
-    // Wordmark JAM (hot pink)
-    x.fillStyle = "#E0005C";
-    x.font = "900 132px Arial Black, Arial, sans-serif";
-    x.fillText("JAM", w / 2, h * 0.64);
+    // CHILLI — large amber
+    c.fillStyle = "#F7AC32";
+    c.font = "900 148px 'Arial Black', Arial, sans-serif";
+    c.fillText("CHILLI", W/2, H * 0.43);
+
+    // JAM — hot pink, slightly smaller
+    c.fillStyle = "#E0005C";
+    c.font = "900 148px 'Arial Black', Arial, sans-serif";
+    c.fillText("JAM", W/2, H * 0.66);
 
     // tagline
-    x.fillStyle = "#F8EFE2";
-    x.font = "600 28px Arial, sans-serif";
-    x.letterSpacing = "3px";
-    x.fillText("SWEET HEAT · UNAPOLOGETICALLY HOT", w / 2, h * 0.78);
+    c.fillStyle = "rgba(248,239,226,0.75)";
+    c.font = "600 21px Arial, sans-serif";
+    c.fillText("SWEET HEAT  ·  UNAPOLOGETICALLY HOT", W/2, H * 0.83);
 
-    const tex = new THREE.CanvasTexture(c);
+    // dot separators across top+bottom
+    c.fillStyle = "rgba(247,172,50,0.4)";
+    for (let i = 0; i < W; i += 18) {
+      c.beginPath(); c.arc(i, 20, 2.5, 0, Math.PI*2); c.fill();
+      c.beginPath(); c.arc(i, H-20, 2.5, 0, Math.PI*2); c.fill();
+    }
+
+    const tex = new THREE.CanvasTexture(cv);
     tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 8;
-    // wrap so it spans the front ~70% of the jar, repeated correctly
-    tex.wrapS = THREE.RepeatWrapping;
+    tex.anisotropy = 16;
     return tex;
   }, []);
 }
@@ -71,11 +100,18 @@ function Jar() {
     if (!g.current) return;
     const p = story.progress;
 
-    const riseP = Math.min(p * 3, 1);
-    const targetY = THREE.MathUtils.lerp(-5, 0, riseP);
-    const targetRotY = p * Math.PI * 2.5;
-    const targetRotZ = Math.sin(p * Math.PI) * 0.14;
-    const targetScale = THREE.MathUtils.lerp(0.6, 1, Math.min(p * 4, 1));
+    // Rise: starts below viewport, fully visible by p=0.3
+    const riseP = Math.min(p * 3.3, 1);
+    const targetY = THREE.MathUtils.lerp(-4.5, -0.1, riseP);
+
+    // Spin on Y axis — 2 full turns across the story
+    const targetRotY = p * Math.PI * 4;
+
+    // Tilt: 0 → ~85° (nearly horizontal) matching the reference "perspective" section
+    const targetRotZ = THREE.MathUtils.lerp(0, Math.PI * 0.47, p);
+
+    // Scale: pops in as it rises
+    const targetScale = THREE.MathUtils.lerp(0.5, 1.1, Math.min(p * 5, 1));
 
     const k = 1 - Math.pow(0.001, dt);
     g.current.rotation.y = THREE.MathUtils.lerp(g.current.rotation.y, targetRotY, k);
@@ -84,88 +120,124 @@ function Jar() {
     g.current.scale.setScalar(THREE.MathUtils.lerp(g.current.scale.x, targetScale, k));
   });
 
-  // Mason-jar proportions: wide, short, slight shoulder taper near the neck
   return (
-    <group ref={g} position={[0.8, -5, 0]} scale={1.15}>
-      {/* ---- Red sauce inside (drawn first, behind glass) ---- */}
-      <mesh position={[0, -0.12, 0]}>
-        <cylinderGeometry args={[0.92, 0.86, 1.55, 64]} />
-        <meshStandardMaterial color="#C42306" roughness={0.45} />
+    // Centered (x=0). Text sections have padding-right:50vw so right half is always clear.
+    <group ref={g} position={[0, -4.5, 0]}>
+
+      {/* ── 1. Red chilli sauce fill (behind glass) ── */}
+      <mesh position={[0, -0.08, 0]}>
+        <cylinderGeometry args={[1.01, 0.93, 1.7, 64]} />
+        <meshStandardMaterial color="#BC2508" roughness={0.4} />
       </mesh>
-      {/* sauce surface meniscus */}
-      <mesh position={[0, 0.66, 0]}>
-        <cylinderGeometry args={[0.92, 0.92, 0.04, 64]} />
-        <meshStandardMaterial color="#E8431A" roughness={0.3} />
+      {/* sauce meniscus surface */}
+      <mesh position={[0, 0.77, 0]}>
+        <cylinderGeometry args={[1.01, 1.01, 0.05, 64]} />
+        <meshStandardMaterial color="#D93515" roughness={0.25} />
       </mesh>
 
-      {/* ---- Glass body (transparent, refractive) ---- */}
+      {/* ── 2. Glass body — open-ended cylinder (inside visible) ── */}
       <mesh>
-        <cylinderGeometry args={[0.98, 0.9, 1.85, 64, 1, true]} />
+        <cylinderGeometry args={[1.08, 1.00, 2.0, 80, 1, true]} />
         <meshPhysicalMaterial
-          color="#fff1e6"
-          roughness={0.05}
+          color="#d4ede8"
+          roughness={0.03}
           metalness={0}
-          transmission={0.92}
+          transmission={0.95}
+          thickness={1.2}
+          ior={1.52}
+          transparent
+          opacity={0.45}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
+      {/* Glass shoulder — tapers from body to neck */}
+      <mesh position={[0, 1.16, 0]}>
+        <cylinderGeometry args={[0.68, 1.08, 0.32, 80, 1, true]} />
+        <meshPhysicalMaterial
+          color="#d4ede8"
+          roughness={0.03}
+          transmission={0.95}
           thickness={0.8}
-          ior={1.5}
+          ior={1.52}
+          transparent
+          opacity={0.4}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
+      {/* Glass bottom disc */}
+      <mesh position={[0, -1.0, 0]}>
+        <cylinderGeometry args={[1.0, 1.0, 0.06, 80]} />
+        <meshPhysicalMaterial
+          color="#d4ede8"
+          roughness={0.05}
+          transmission={0.9}
+          thickness={0.8}
           transparent
           opacity={0.55}
+        />
+      </mesh>
+
+      {/* ── 3. Label wrapped around glass ── */}
+      <mesh position={[0, -0.06, 0]}>
+        <cylinderGeometry args={[1.10, 1.02, 1.28, 80, 1, true]} />
+        <meshStandardMaterial
+          map={label}
+          roughness={0.58}
           side={THREE.DoubleSide}
         />
       </mesh>
 
-      {/* glass shoulder (top taper into neck) */}
-      <mesh position={[0, 1.03, 0]}>
-        <cylinderGeometry args={[0.62, 0.98, 0.32, 64, 1, true]} />
+      {/* ── 4. Neck ── */}
+      <mesh position={[0, 1.42, 0]}>
+        <cylinderGeometry args={[0.66, 0.68, 0.22, 64, 1, true]} />
         <meshPhysicalMaterial
-          color="#fff1e6"
+          color="#d4ede8"
           roughness={0.05}
-          transmission={0.92}
-          thickness={0.6}
-          ior={1.5}
-          transparent
-          opacity={0.5}
+          transmission={0.9}
+          thickness={0.5}
+          transparent opacity={0.5}
           side={THREE.DoubleSide}
         />
       </mesh>
 
-      {/* glass bottom disc */}
-      <mesh position={[0, -0.93, 0]}>
-        <cylinderGeometry args={[0.9, 0.9, 0.05, 64]} />
-        <meshPhysicalMaterial color="#fff1e6" roughness={0.1} transmission={0.85} thickness={0.5} transparent opacity={0.6} />
+      {/* ── 5. Lid ── */}
+      {/* outer metal ring */}
+      <mesh position={[0, 1.65, 0]}>
+        <cylinderGeometry args={[0.74, 0.74, 0.38, 96]} />
+        <meshStandardMaterial color="#0e0806" roughness={0.38} metalness={0.3} />
       </mesh>
-
-      {/* ---- Wraparound label (sits just outside the glass) ---- */}
-      <mesh position={[0, -0.08, 0]}>
-        <cylinderGeometry args={[1.0, 0.94, 1.15, 64, 1, true]} />
-        <meshStandardMaterial map={label} roughness={0.62} side={THREE.DoubleSide} />
+      {/* ribbed edge (flat-shaded for knurl effect) */}
+      <mesh position={[0, 1.65, 0]}>
+        <cylinderGeometry args={[0.745, 0.745, 0.38, 160, 1, false]} />
+        <meshStandardMaterial color="#1c1410" roughness={0.72} metalness={0.08} flatShading />
       </mesh>
-
-      {/* ---- Neck threads ---- */}
-      <mesh position={[0, 1.24, 0]}>
-        <cylinderGeometry args={[0.6, 0.6, 0.2, 48]} />
-        <meshPhysicalMaterial color="#fff1e6" roughness={0.1} transmission={0.8} thickness={0.4} transparent opacity={0.6} />
+      {/* lid top face */}
+      <mesh position={[0, 1.84, 0]}>
+        <cylinderGeometry args={[0.7, 0.74, 0.04, 96]} />
+        <meshStandardMaterial color="#151010" roughness={0.35} metalness={0.35} />
       </mesh>
-
-      {/* ---- Black screw lid (ribbed) ---- */}
-      <mesh position={[0, 1.46, 0]}>
-        <cylinderGeometry args={[0.66, 0.66, 0.34, 96]} />
-        <meshStandardMaterial color="#0d0805" roughness={0.45} metalness={0.25} />
-      </mesh>
-      {/* ribbed knurl ring on lid edge */}
-      <mesh position={[0, 1.46, 0]}>
-        <cylinderGeometry args={[0.665, 0.665, 0.34, 160]} />
-        <meshStandardMaterial color="#1a1210" roughness={0.7} metalness={0.1} flatShading />
-      </mesh>
-      {/* lid top */}
-      <mesh position={[0, 1.63, 0]}>
-        <cylinderGeometry args={[0.62, 0.66, 0.04, 96]} />
-        <meshStandardMaterial color="#161010" roughness={0.4} metalness={0.3} />
+      {/* lid centre disc */}
+      <mesh position={[0, 1.87, 0]}>
+        <cylinderGeometry args={[0.5, 0.5, 0.015, 64]} />
+        <meshStandardMaterial color="#F7AC32" roughness={0.4} emissive="#F7AC32" emissiveIntensity={0.15} />
       </mesh>
       {/* white sealing band under lid */}
-      <mesh position={[0, 1.29, 0]}>
-        <cylinderGeometry args={[0.605, 0.605, 0.05, 64]} />
-        <meshStandardMaterial color="#e8e2d8" roughness={0.6} />
+      <mesh position={[0, 1.47, 0]}>
+        <cylinderGeometry args={[0.67, 0.67, 0.06, 64]} />
+        <meshStandardMaterial color="#e2ddd5" roughness={0.65} />
+      </mesh>
+
+      {/* ── 6. Glass rim highlight (thin bright ring at top of body) ── */}
+      <mesh position={[0, 1.0, 0]}>
+        <torusGeometry args={[1.04, 0.025, 16, 120]} />
+        <meshStandardMaterial color="#ffffff" roughness={0.1} emissive="#ffffff" emissiveIntensity={0.25} />
+      </mesh>
+      {/* bottom glass rim */}
+      <mesh position={[0, -1.0, 0]}>
+        <torusGeometry args={[1.01, 0.02, 16, 120]} />
+        <meshStandardMaterial color="#ffffff" roughness={0.1} emissive="#ffffff" emissiveIntensity={0.2} />
       </mesh>
     </group>
   );
@@ -176,17 +248,24 @@ export default function JarLayer() {
     <div className="jar-layer" style={{ position: "fixed", inset: 0, zIndex: 10, pointerEvents: "none" }}>
       <Canvas
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 6], fov: 34 }}
+        camera={{ position: [0, 0, 6.5], fov: 32 }}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[5, 8, 6]} intensity={2.2} />
-        <directionalLight position={[-5, 3, -2]} intensity={0.9} color="#F7AC32" />
-        <pointLight position={[3, -2, 4]} intensity={1.4} color="#E8821E" />
-        <pointLight position={[-3, 4, 2]} intensity={0.7} color="#C21A6C" />
-        {/* studio reflections for realistic glass */}
-        <Environment preset="studio" environmentIntensity={0.8}>
-          <Lightformer intensity={2} position={[0, 3, 4]} scale={[6, 4, 1]} />
+        <ambientLight intensity={0.6} />
+        {/* key light from front-right top */}
+        <directionalLight position={[4, 7, 5]} intensity={2.8} />
+        {/* amber fill from left */}
+        <directionalLight position={[-5, 2, -1]} intensity={1.1} color="#F7AC32" />
+        {/* warm orange rim from below */}
+        <pointLight position={[0, -4, 3]} intensity={2.0} color="#E8821E" />
+        {/* magenta accent bounce */}
+        <pointLight position={[-3, 3, 1]} intensity={0.8} color="#C21A6C" />
+
+        <Environment preset="studio" environmentIntensity={1.0}>
+          {/* large soft box above — critical for glass reflections */}
+          <Lightformer intensity={3} form="ring" position={[0, 5, 3]} scale={[8, 8, 1]} />
+          {/* floor bounce */}
+          <Lightformer intensity={1.2} position={[0, -3, 2]} scale={[6, 2, 1]} color="#E8821E" />
         </Environment>
         <Jar />
       </Canvas>

@@ -6,7 +6,7 @@
   justify-content: flex-end;
   gap: 3rem;
   /* Text left — right half open for jar */
-  padding-right: max(50vw, 3rem);
+  padding-right: max(55vw, 3rem);
 }
 
 .heading {

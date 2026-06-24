@@ -1,7 +1,7 @@
 .section {
   background: var(--brick-dark);
   /* Text left, right half open for 3D jar */
-  padding-right: max(50vw, 3rem);
+  padding-right: max(55vw, 3rem);
 }
 
 .heading {

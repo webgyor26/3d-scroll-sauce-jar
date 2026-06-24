@@ -6,7 +6,7 @@
   justify-content: flex-start;
   /* Left half only — right half stays clear for the 3D jar */
   padding: calc(64px + clamp(3rem, 8vw, 7rem)) clamp(1.5rem, 6vw, 7rem) clamp(4rem, 8vw, 7rem);
-  padding-right: max(50vw, 3rem);
+  padding-right: max(55vw, 3rem);
   background: var(--brick);
   z-index: 2;
 }
