@@ -17,9 +17,9 @@ import { story } from "../../lib/storyProgress";
 
 const BASE = import.meta.env.BASE_URL || "/";
 const FRAMES = [
-  `${BASE}jar/step1.png`,
-  `${BASE}jar/step2.png`,
-  `${BASE}jar/step3.png`,
+  `${BASE}jar/step-1-Photoroom.png`, // closed, upright (idle)
+  `${BASE}jar/step-2-Photoroom.png`, // lid off (opening)
+  `${BASE}jar/step-3-Photoroom.png`, // tilted, pouring (pour)
 ];
 
 export default function FrameScrubJar() {
