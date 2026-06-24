@@ -5,6 +5,8 @@
   flex-direction: column;
   justify-content: flex-end;
   padding-bottom: clamp(4rem, 10vw, 10rem);
+  /* Text left — right half open for jar */
+  padding-right: max(50vw, 3rem);
 }
 
 .heading {

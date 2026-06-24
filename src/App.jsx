@@ -25,10 +25,25 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const storyRef = useRef(null);
+  const jarWrapRef = useRef(null);
 
   useEffect(() => {
     const lenis = initSmoothScroll();
     if (storyRef.current) trackStory(storyRef.current);
+
+    // Fade the jar out as user scrolls past the story sections
+    if (storyRef.current && jarWrapRef.current) {
+      gsap.to(jarWrapRef.current, {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: storyRef.current,
+          start: "bottom 60%",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }
 
     return () => {
       lenis?.destroy?.();
@@ -40,9 +55,13 @@ export default function App() {
     <>
       <GrainOverlay />
       <Header />
-      <JarLayer />
 
-      {/* Story wrapper — drives jar scroll animation */}
+      {/* Jar floats above everything — pointer-events none so text remains clickable */}
+      <div ref={jarWrapRef}>
+        <JarLayer />
+      </div>
+
+      {/* Story wrapper — scroll progress drives the jar rise + rotation */}
       <div ref={storyRef} style={{ position: "relative", zIndex: 2 }}>
         <Hero />
         <AngleOfFlavor />

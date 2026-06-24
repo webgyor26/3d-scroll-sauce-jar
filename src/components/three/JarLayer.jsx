@@ -10,81 +10,103 @@ function Jar() {
   useFrame((_, dt) => {
     if (!g.current) return;
     const p = story.progress;
+
+    // Rise from below viewport (y=-5) to resting position (y=0)
+    const riseP = Math.min(p * 3, 1);                            // rises fast in first 33% of story
+    const targetY = THREE.MathUtils.lerp(-5, 0, riseP);
+
+    // Full Y rotation across whole story
     const targetRotY = p * Math.PI * 2.5;
-    const targetRotZ = THREE.MathUtils.lerp(0, Math.PI * 0.15, Math.min(p * 2, 1));
-    const targetY = THREE.MathUtils.lerp(-2.5, 0.3, Math.min(p * 2, 1));
-    const k = 1 - Math.pow(0.001, dt);
+
+    // Gentle Z tilt: upright → slight tilt mid-story → back
+    const tiltP = Math.sin(p * Math.PI);
+    const targetRotZ = tiltP * 0.18;
+
+    // Scale: pop in as it rises
+    const targetScale = THREE.MathUtils.lerp(0.6, 1, Math.min(p * 4, 1));
+
+    const k = 1 - Math.pow(0.001, dt); // frame-rate-independent smooth
     g.current.rotation.y = THREE.MathUtils.lerp(g.current.rotation.y, targetRotY, k);
     g.current.rotation.z = THREE.MathUtils.lerp(g.current.rotation.z, targetRotZ, k);
     g.current.position.y = THREE.MathUtils.lerp(g.current.position.y, targetY, k);
+    g.current.scale.setScalar(THREE.MathUtils.lerp(g.current.scale.x, targetScale, k));
   });
 
   return (
-    <group ref={g} position={[0, -2.5, 0]}>
-      {/* Jar body */}
-      <mesh position={[0, 0, 0]} castShadow>
-        <cylinderGeometry args={[0.82, 0.75, 2.1, 64]} />
+    // Offset X=0.8 to sit right-of-center, matching reference layout (text left, jar right)
+    <group ref={g} position={[0.8, -5, 0]}>
+      {/* Jar body — slightly tapered like a real jam jar */}
+      <mesh castShadow>
+        <cylinderGeometry args={[0.78, 0.70, 2.2, 64]} />
         <meshPhysicalMaterial
-          color="#D44A0A"
-          roughness={0.18}
+          color="#C83E08"
+          roughness={0.15}
           metalness={0.02}
-          transmission={0.15}
-          thickness={0.5}
+          transmission={0.12}
+          thickness={0.6}
+          clearcoat={0.4}
+          clearcoatRoughness={0.1}
         />
       </mesh>
 
-      {/* Label band */}
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.83, 0.76, 1.4, 64]} />
-        <meshStandardMaterial color="#F8EFE2" roughness={0.6} />
+      {/* Cream label band */}
+      <mesh>
+        <cylinderGeometry args={[0.79, 0.71, 1.5, 64]} />
+        <meshStandardMaterial color="#F8EFE2" roughness={0.55} />
       </mesh>
 
-      {/* Label text ring (thin amber stripe) */}
-      <mesh position={[0, 0.5, 0]}>
-        <cylinderGeometry args={[0.835, 0.835, 0.08, 64]} />
-        <meshStandardMaterial color="#F7AC32" roughness={0.4} emissive="#F7AC32" emissiveIntensity={0.3} />
+      {/* Amber stripe top of label */}
+      <mesh position={[0, 0.72, 0]}>
+        <cylinderGeometry args={[0.795, 0.715, 0.07, 64]} />
+        <meshStandardMaterial color="#F7AC32" emissive="#F7AC32" emissiveIntensity={0.5} roughness={0.3} />
       </mesh>
-      <mesh position={[0, -0.5, 0]}>
-        <cylinderGeometry args={[0.835, 0.835, 0.08, 64]} />
-        <meshStandardMaterial color="#F7AC32" roughness={0.4} emissive="#F7AC32" emissiveIntensity={0.3} />
+      {/* Amber stripe bottom of label */}
+      <mesh position={[0, -0.72, 0]}>
+        <cylinderGeometry args={[0.795, 0.715, 0.07, 64]} />
+        <meshStandardMaterial color="#F7AC32" emissive="#F7AC32" emissiveIntensity={0.5} roughness={0.3} />
+      </mesh>
+
+      {/* Hot-pink chilli brand stripe through label center */}
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.792, 0.712, 0.12, 64]} />
+        <meshStandardMaterial color="#C21A6C" emissive="#C21A6C" emissiveIntensity={0.4} roughness={0.3} />
       </mesh>
 
       {/* Lid */}
-      <mesh position={[0, 1.22, 0]}>
-        <cylinderGeometry args={[0.88, 0.88, 0.38, 64]} />
-        <meshStandardMaterial color="#120A06" roughness={0.35} metalness={0.1} />
+      <mesh position={[0, 1.27, 0]}>
+        <cylinderGeometry args={[0.84, 0.84, 0.42, 64]} />
+        <meshStandardMaterial color="#120A06" roughness={0.3} metalness={0.15} />
       </mesh>
-      {/* Lid top disc */}
-      <mesh position={[0, 1.42, 0]}>
-        <cylinderGeometry args={[0.88, 0.88, 0.02, 64]} />
-        <meshStandardMaterial color="#231009" roughness={0.3} metalness={0.15} />
+      {/* Lid top face */}
+      <mesh position={[0, 1.49, 0]}>
+        <cylinderGeometry args={[0.84, 0.84, 0.03, 64]} />
+        <meshStandardMaterial color="#231009" roughness={0.25} metalness={0.2} />
+      </mesh>
+      {/* Lid rim highlight */}
+      <mesh position={[0, 1.47, 0]}>
+        <torusGeometry args={[0.84, 0.03, 12, 64]} />
+        <meshStandardMaterial color="#4E1E11" roughness={0.4} metalness={0.1} />
       </mesh>
 
-      {/* Bottom cap */}
-      <mesh position={[0, -1.07, 0]}>
-        <cylinderGeometry args={[0.75, 0.75, 0.06, 64]} />
-        <meshStandardMaterial color="#4E1E11" roughness={0.5} />
+      {/* Bottom base */}
+      <mesh position={[0, -1.12, 0]}>
+        <cylinderGeometry args={[0.70, 0.70, 0.06, 64]} />
+        <meshStandardMaterial color="#4E1E11" roughness={0.6} />
       </mesh>
-
-      {/* Chilli inside (visible through label gap) - decorative spheres */}
-      {[-0.2, 0.1, -0.05].map((x, i) => (
-        <mesh key={i} position={[x * 0.5, -0.6 + i * 0.5, 0.3]}>
-          <sphereGeometry args={[0.08, 16, 16]} />
-          <meshStandardMaterial color="#C21A6C" roughness={0.6} emissive="#C21A6C" emissiveIntensity={0.2} />
-        </mesh>
-      ))}
     </group>
   );
 }
 
 export default function JarLayer() {
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 1, pointerEvents: "none" }}>
-      <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0, 5.5], fov: 38 }} shadows>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[4, 6, 4]} intensity={2.2} castShadow />
-        <directionalLight position={[-3, 2, -2]} intensity={0.6} color="#F7AC32" />
-        <pointLight position={[0, -3, 2]} intensity={0.8} color="#E8821E" />
+    // zIndex 10 — floats above all section content. pointer-events:none so text is clickable.
+    <div style={{ position: "fixed", inset: 0, zIndex: 10, pointerEvents: "none" }}>
+      <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0, 6], fov: 36 }} shadows>
+        <ambientLight intensity={0.55} />
+        <directionalLight position={[5, 8, 5]} intensity={2.5} castShadow />
+        <directionalLight position={[-4, 2, -3]} intensity={0.7} color="#F7AC32" />
+        <pointLight position={[2, -2, 3]} intensity={1.2} color="#E8821E" />
+        <pointLight position={[-2, 3, 2]} intensity={0.5} color="#C21A6C" />
         <Environment preset="warehouse" />
         <Jar />
       </Canvas>
