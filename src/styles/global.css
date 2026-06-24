@@ -102,3 +102,19 @@ button {
   color: var(--amber);
   font-family: 'Hanken Grotesk', sans-serif;
 }
+
+/* ── Mobile polish ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Story sections: restore full-width on mobile */
+  .section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Hide the heavy 3D canvas on very small screens */
+@media (max-width: 480px) {
+  .jar-layer {
+    display: none;
+  }
+}

@@ -46,3 +46,10 @@
   max-width: 380px;
   line-height: 1.5;
 }
+
+@media (max-width: 768px) {
+  .hero {
+    padding-right: 1.5rem;
+    min-height: 100svh;
+  }
+}

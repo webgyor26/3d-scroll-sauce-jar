@@ -1,0 +1,172 @@
+/* Fixed bottom-right corner buttons */
+.corner {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  z-index: 100;
+}
+
+.iconBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--amber);
+  color: var(--espresso);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+
+.iconBtn:hover {
+  transform: scale(1.1);
+  background: var(--amber-soft);
+}
+
+/* Modal */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal {
+  background: var(--espresso);
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2.5rem;
+  position: relative;
+  border: 1px solid rgba(247,172,50,0.15);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.4rem;
+  background: none;
+  border: none;
+  color: var(--cream);
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.closeBtn:hover { opacity: 1; }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 2px solid var(--amber);
+  color: var(--amber);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tabActive {
+  background: var(--amber);
+  color: var(--espresso);
+}
+
+/* Ingredients grid */
+.ingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.ingCard {
+  background: rgba(247,172,50,0.06);
+  border: 1px solid rgba(247,172,50,0.12);
+  border-radius: 1rem;
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+}
+
+.ingIcon { font-size: 2rem; }
+
+.ingName {
+  color: var(--amber);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ingNote {
+  color: var(--cream);
+  opacity: 0.65;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* Nutrition table */
+.nutWrap { }
+
+.serving {
+  color: var(--amber);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  color: var(--amber);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(247,172,50,0.2);
+}
+
+.table td {
+  padding: 0.6rem 0;
+  color: var(--cream);
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.table td:last-child {
+  text-align: right;
+  color: var(--amber);
+  font-weight: 600;
+}

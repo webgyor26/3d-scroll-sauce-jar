@@ -1,6 +1,7 @@
 .section {
   background: var(--brick-dark);
-  text-align: center;
+  /* Text left, right half open for 3D jar */
+  padding-right: max(50vw, 3rem);
 }
 
 .heading {
@@ -11,7 +12,7 @@
 
 .badges {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: clamp(1rem, 4vw, 3rem);
   flex-wrap: wrap;
   margin-bottom: 3rem;
@@ -49,9 +50,12 @@
 }
 
 .para {
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 460px;
   color: var(--cream);
   opacity: 0.75;
   line-height: 1.65;
+}
+
+@media (max-width: 768px) {
+  .section { padding-right: 1.5rem; }
 }

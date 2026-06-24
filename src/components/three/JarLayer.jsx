@@ -173,7 +173,7 @@ function Jar() {
 
 export default function JarLayer() {
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 10, pointerEvents: "none" }}>
+    <div className="jar-layer" style={{ position: "fixed", inset: 0, zIndex: 10, pointerEvents: "none" }}>
       <Canvas
         dpr={[1, 2]}
         camera={{ position: [0, 0, 6], fov: 34 }}

@@ -28,3 +28,7 @@
   opacity: 0.75;
   max-width: 340px;
 }
+
+@media (max-width: 768px) {
+  .section { padding-right: 1.5rem; }
+}

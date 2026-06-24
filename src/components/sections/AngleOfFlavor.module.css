@@ -22,3 +22,7 @@
   opacity: 0.8;
   line-height: 1.65;
 }
+
+@media (max-width: 768px) {
+  .section { padding-right: 1.5rem; }
+}
